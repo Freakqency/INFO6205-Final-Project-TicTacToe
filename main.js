@@ -9,9 +9,19 @@ const X_CLASS = 'x'
 const CIRCLE_CLASS = 'circle'
 let circleTurn
 
+startGame()
+
 cellElements.forEach(cell => {
 	cell.addEventListener('click', handleClick, { once: true })
 })
+
+function startGame() {
+	circleTurn = false
+	cellElements.forEach(cell => {
+		cell.addEventListener('click', handleClick, { once: true })
+	})
+	setBoardHoverClass
+}
 
 function handleClick(e) {
 	const cell = e.target
@@ -37,3 +47,4 @@ function setBoardHoverClass() {
 	if (circleTurn) board.classList.add(CIRCLE_CLASS)
 	else board.classList.add(X_CLASS)
 }
+
