@@ -19,8 +19,21 @@ function handleClick(e) {
 	placeMark(cell, currentClass)
 	//check For Win
 	//Check for marks
+	swapTurns()
+	setBoardHoverClass()
 }
 
 function placeMark(cell, currentClass) {
 	cell.classList.add(currentClass)
+}
+
+function swapTurns() {
+	circleTurn = !circleTurn
+}
+
+function setBoardHoverClass() {
+	board.classList.remove(X_CLASS)
+	board.classList.remove(CIRCLE_CLASS)
+	if (circleTurn) board.classList.add(CIRCLE_CLASS)
+	else board.classList.add(X_CLASS)
 }
