@@ -49,6 +49,7 @@ function fillMatchBox(){
 		matchBoxes.push(move)
 	}
 	console.log("matchboxes ", matchBoxes)
+	logGame("Making the matchboxes and beads ready for you...")
 }
 
 cellElements.forEach(cell => {
@@ -62,6 +63,7 @@ function startGame() {
 	})
 	setBoardHoverClass
 	fillMatchBox();
+	logGame("Starting the game !")
 	console.log("matchbox  ", matchBoxes);
 }
 
@@ -80,10 +82,13 @@ function handleClick(e) {
 function endGame(draw) {
 	if (draw) {
 		console.log("Draw")
+		logGame("Its a draw. Well tried!")
 		document.getElementById("header").innerHTML = `Match Draw`;
 	} else {
 		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
 		console.log(`${circleTurn ? "O Win's" : "X wins"}`);
+		logGame(`${circleTurn ? "O Win's" : "X wins"}`)
+
 	}
 	
 	lockBoard();
@@ -123,6 +128,13 @@ function checkWin(currentClass) {
 			return cellElements[index].classList.contains(currentClass)
 		})
 	})
+}
+
+function logGame(message){
+	var 	logElement = document.createElement("div");
+	logElement.appendChild(document.createTextNode(message));
+	logElement.classList.add("col-md-12")
+	document.getElementById('logContainer').appendChild(logElement);  
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
