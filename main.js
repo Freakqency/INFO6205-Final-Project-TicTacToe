@@ -27,7 +27,6 @@ gameInfo = { "startTime": Date.UTC }
 
 let circleTurn
 
-
 let gameCells = 9
 
 let getAllGameStates = gameCells => {
@@ -47,13 +46,17 @@ function fillMatchBox() {
 	for (const element of gameStates) {
 		// move = { element: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
 		// matchBoxes.push(move)
-		console.log(element)
 		var temp = []
 		for (let i = 0; i < element.length; i++) {
 			if (element[i] == '0') temp.push(i)
 		}
 		matchBoxes[element] = temp
 	}
+}
+
+function getBead(currentBoardState) {
+	var beads = matchBoxes[currentBoardState]
+	return beads[Math.floor(Math.random() * beads.length)];
 }
 
 cellElements.forEach(cell => {
@@ -67,7 +70,6 @@ function startGame() {
 	})
 	setBoardHoverClass
 	fillMatchBox();
-	console.log("matchbox  ", matchBoxes);
 }
 
 function handleClick(e) {
