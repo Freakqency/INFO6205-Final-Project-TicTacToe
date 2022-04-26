@@ -14,7 +14,7 @@ body {
 
 .board {
 	width: 100vw;
-	height: 100vh;
+	height: 80vh;
 	display: grid;
 	justify-content: center;
 	justify-items: center;
@@ -116,4 +116,9 @@ body {
 	width: calc(var(--mark-size) * .7);
 	height: calc(var(--mark-size) * .7);
 	background-color: white;
+}
+.header-align
+{
+	text-align: center;
+    color: #9a0b0b;
 }
