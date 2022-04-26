@@ -45,10 +45,15 @@ let getAllGameStates = gameCells => {
 function fillMatchBox() {
 	gameStates = getAllGameStates(gameCells)
 	for (const element of gameStates) {
-		move = { element: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
-		matchBoxes.push(move)
+		// move = { element: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
+		// matchBoxes.push(move)
+		console.log(element)
+		var temp = []
+		for (let i = 0; i < element.length; i++) {
+			if (element[i] == '0') temp.push(i)
+		}
+		matchBoxes[element] = temp
 	}
-	console.log("matchboxes ", matchBoxes)
 }
 
 cellElements.forEach(cell => {
@@ -131,9 +136,7 @@ function getBoardState() {
 	}
 	return board.join(", ")
 }
+
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
 
-
 startGame()
-
-
