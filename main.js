@@ -19,9 +19,37 @@ const WINNING_COMBINATIONS = [
 	[0, 4, 8],
 	[2, 4, 6],
 ]
+
+var matchBoxes = [];
+
+let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [] }
+gameInfo = { "startTime": Date.UTC }
+
 let circleTurn
 
-startGame()
+
+let gameCells = 9
+
+let getAllGameStates = gameCells => {
+	let possibleMoves = '012'.split('') // X --> 1, O --> 2, empty position --> 0
+	let lengthen = word => possibleMoves.map(letter => word + letter)
+	let addLetters = words => flatten(words.map(lengthen))
+	let _getAllWords = (letters, words = possibleMoves, current = 1) => {
+		return letters == current ? words :
+			_getAllWords(letters, addLetters(words), current + 1)
+	}
+
+	return _getAllWords(gameCells)
+}
+
+function fillMatchBox() {
+	gameStates = getAllGameStates(gameCells)
+	for (const element of gameStates) {
+		move = { element: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
+		matchBoxes.push(move)
+	}
+	console.log("matchboxes ", matchBoxes)
+}
 
 cellElements.forEach(cell => {
 	cell.addEventListener('click', handleClick, { once: true })
@@ -33,6 +61,8 @@ function startGame() {
 		cell.addEventListener('click', handleClick, { once: true })
 	})
 	setBoardHoverClass
+	fillMatchBox();
+	console.log("matchbox  ", matchBoxes);
 }
 
 function handleClick(e) {
@@ -54,6 +84,7 @@ function endGame(draw) {
 	} else console.log(`${circleTurn ? "O Win's" : "X wins"}`)
 	document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
 	lockBoard();
+
 }
 
 function isDraw() {
@@ -100,3 +131,9 @@ function getBoardState() {
 	}
 	return board.join(", ")
 }
+let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
+
+
+startGame()
+
+
