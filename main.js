@@ -49,6 +49,8 @@ function endGame(draw) {
 	if (draw) {
 		console.log("Draw")
 	} else console.log(`${circleTurn ? "O Win's" : "X wins"}`)
+	document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
+	lockBoard();
 }
 
 function isDraw() {
@@ -63,6 +65,12 @@ function placeMark(cell, currentClass) {
 
 function swapTurns() {
 	circleTurn = !circleTurn
+}
+
+function lockBoard(){
+	cellElements.forEach(cell => {
+		cell.removeEventListener('click', handleClick, { once: false })
+	})
 }
 
 function setBoardHoverClass() {
