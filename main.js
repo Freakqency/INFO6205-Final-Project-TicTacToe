@@ -132,9 +132,11 @@ function checkWin(currentClass) {
 
 function logGame(message){
 	var 	logElement = document.createElement("div");
-	logElement.appendChild(document.createTextNode(message));
 	logElement.classList.add("col-md-12")
-	document.getElementById('logContainer').appendChild(logElement);  
+	document.getElementById('logContainer').insertBefore(logElement, document.getElementById('logContainer').firstChild);
+	logElement.appendChild(document.createTextNode(message));
+
+	// document.getElementById('logContainer').appendChild(logElement);  
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
