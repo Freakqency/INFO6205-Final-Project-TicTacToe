@@ -56,7 +56,6 @@ function random_item(items) {
 	return items[Math.floor(Math.random() * items.length)];
 }
 
-
 function getBead(currentBoardState) {
 	var beads = matchBoxes[currentBoardState]
 	return random_item(beads)
