@@ -19,6 +19,10 @@ const WINNING_COMBINATIONS = [
 	[0, 4, 8],
 	[2, 4, 6],
 ]
+
+let stats = {"menaceWin":0, "menaceDraw":0, "menaceLost":0, "totalMatch":0, "gameHistory":[]}
+gameInfo = {"startTime": Date.UTC}
+
 let circleTurn
 
 startGame()
@@ -53,6 +57,7 @@ function endGame(draw) {
 	} else console.log(`${circleTurn ? "O Win's" : "X wins"}`)
 	document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
 	lockBoard();
+
 }
 
 function isDraw() {
@@ -89,3 +94,21 @@ function checkWin(currentClass) {
 		})
 	})
 }
+
+let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
+
+let gameCells = 9
+
+let getAllGameStates = gameCells => {
+    let possibleMoves = '012'.split('') // X --> 1, O --> 2, empty position --> 0
+    let lengthen = word => possibleMoves.map(letter => word + letter)
+    let addLetters = words => flatten(words.map(lengthen))
+    let _getAllWords = (letters, words = possibleMoves, current = 1) => {
+        return letters == current ? words : 
+            _getAllWords(letters, addLetters(words), current + 1)
+    }
+
+    return _getAllWords(gameCells)
+}
+
+
