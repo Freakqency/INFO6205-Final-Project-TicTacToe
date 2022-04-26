@@ -1,7 +1,9 @@
 // 1. Menace goes first
-// 2. Loose remove the beads
-// 3. Win add 3 more beads
-// 4. Draw 1 beads
+// 2. Store states in a hash table
+// 3. Use State as key
+// 4. Loose remove the beads
+// 5. Win add 3 more beads
+// 6. Draw 1 beads
 
 const cellElements = document.querySelectorAll('[data-cell]')
 const board = document.getElementById('board')
