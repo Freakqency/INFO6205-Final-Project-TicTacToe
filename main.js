@@ -39,6 +39,7 @@ function handleClick(e) {
 	const cell = e.target
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	placeMark(cell, currentClass)
+	var currentBoardState = getBoardState()
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
 	else {
@@ -69,7 +70,7 @@ function swapTurns() {
 	circleTurn = !circleTurn
 }
 
-function lockBoard(){
+function lockBoard() {
 	cellElements.forEach(cell => {
 		cell.removeEventListener('click', handleClick, { once: false })
 	})
@@ -88,4 +89,14 @@ function checkWin(currentClass) {
 			return cellElements[index].classList.contains(currentClass)
 		})
 	})
+}
+
+function getBoardState() {
+	var board = Array.from(cellElements);
+	for (let i = 0; i < 9; i++) {
+		if (board[i].className == "cell x") board[i] = 1
+		else if (board[i].className == 'cell circle') board[i] = 0
+		else board[i] = -1
+	}
+	return board.join(", ")
 }
