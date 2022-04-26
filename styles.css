@@ -14,7 +14,7 @@ body {
 
 .board {
 	width: 100vw;
-	height: 80vh;
+	height: 60vh;
 	display: grid;
 	justify-content: center;
 	justify-items: center;
@@ -121,4 +121,18 @@ body {
 {
 	text-align: center;
     color: #9a0b0b;
+}
+.btn-align
+{
+	background-color: green;
+    border: 5px solid green;
+    border-radius: 22px;
+    width: 200px;
+    height: 40px;
+    color: white;
+    font-size: 15px;
+}
+.algn-center
+{
+	text-align: center;
 }
