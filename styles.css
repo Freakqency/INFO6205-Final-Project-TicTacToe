@@ -13,8 +13,8 @@ body {
 }
 
 .board {
-	width: 100vw;
-	height: 60vh;
+	/* width: 100vw;
+	height: 60vh; */
 	display: grid;
 	justify-content: center;
 	justify-items: center;
@@ -121,6 +121,7 @@ body {
 {
 	text-align: center;
     color: #9a0b0b;
+	padding-bottom: 30px;
 }
 .btn-align
 {
@@ -135,4 +136,5 @@ body {
 .algn-center
 {
 	text-align: center;
+	padding-top: 50px;
 }
