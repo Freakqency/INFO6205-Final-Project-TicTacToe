@@ -44,8 +44,6 @@ let getAllGameStates = gameCells => {
 function fillMatchBox() {
 	gameStates = getAllGameStates(gameCells)
 	for (const element of gameStates) {
-		// move = { element: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
-		// matchBoxes.push(move)
 		var temp = []
 		for (let i = 0; i < element.length; i++) {
 			if (element[i] == '0') temp.push(i)
@@ -54,9 +52,14 @@ function fillMatchBox() {
 	}
 }
 
+function random_item(items) {
+	return items[Math.floor(Math.random() * items.length)];
+}
+
+
 function getBead(currentBoardState) {
 	var beads = matchBoxes[currentBoardState]
-	return beads[Math.floor(Math.random() * beads.length)];
+	return random_item(beads)
 }
 
 cellElements.forEach(cell => {
@@ -133,10 +136,10 @@ function getBoardState() {
 	var board = Array.from(cellElements);
 	for (let i = 0; i < 9; i++) {
 		if (board[i].className == "cell x") board[i] = 1
-		else if (board[i].className == 'cell circle') board[i] = 0
-		else board[i] = -1
+		else if (board[i].className == 'cell circle') board[i] = 2
+		else board[i] = 0
 	}
-	return board.join(", ")
+	return board.join("")
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
