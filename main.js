@@ -80,8 +80,12 @@ function handleClick(e) {
 function endGame(draw) {
 	if (draw) {
 		console.log("Draw")
-	} else console.log(`${circleTurn ? "O Win's" : "X wins"}`)
-	document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
+		document.getElementById("header").innerHTML = `Match Draw`;
+	} else {
+		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
+		console.log(`${circleTurn ? "O Win's" : "X wins"}`);
+	}
+	
 	lockBoard();
 
 }
