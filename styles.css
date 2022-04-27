@@ -166,9 +166,10 @@ highcharts-data-table caption {
     background: #f1f7ff;
 }
 .hgt-overflow{
-	border: 1px solid #0b410b;
+	background-color: #fff;
     height: 400px;
     overflow-y: scroll;
+	margin-top: 14px;
 }
 .highcharts-figure,
 .highcharts-data-table table {
