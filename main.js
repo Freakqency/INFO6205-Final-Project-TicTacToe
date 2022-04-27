@@ -137,7 +137,7 @@ function playMenace() {
 		setBoardHoverClass()
 	}
 	if(gameType==2 || gameType==3){
-		window.setTimeout(playMenace2, 2000)
+		window.setTimeout(playMenace2, 1000)
 	}
 }
 
@@ -292,6 +292,7 @@ function postmortem() {
 	if (winner == "X") {
 		for (let i = 0; i < mv; i++) {
 			matchBoxes[record_pos[i]].push(record_moves[i])
+			gameInfo.numberOfBead++;
 			console.log("Current match"+matchBoxes[record_pos[i]])
 		}
 
@@ -299,6 +300,7 @@ function postmortem() {
 	else if (winner == "O") {
 		for (let i = 0; i < mv; i++) {
 			var filtered = matchBoxes[record_pos[i]].filter(function(value, index, arr){ 
+				gameInfo.numberOfBead--;
 				return value == record_pos[i];
 			});
 			matchBoxes[record_pos[i]]=filtered
@@ -306,10 +308,13 @@ function postmortem() {
 
 		}
 
+	
+
 	}
 	else if (winner == "Draw") {
 		for (let i = 0; i < DELTA; i++) {
 			matchBoxes[record_pos[i]].push(record_moves[i])
+			gameInfo.numberOfBead++;
 		}	}
 		console.log(matchBoxes[record_pos])
 		// matchBoxes[record_pos[i]][record_moves[i]] += adjacements
@@ -331,36 +336,45 @@ function publishgraphs(){
 	document.getElementById("win").innerText = stats.menaceWin
 	document.getElementById("lost").innerText = stats.menaceLost
 	document.getElementById("draw").innerText = stats.menaceDraw
-	
+
+	gameNumber = []
+	numberOfBead = []
+	for(let i=0; i<stats.totalMatch; i++){
+		gameNumber.push(i)
+		numberOfBead.push(stats.gameHistory[i].numberOfBead)
+	}	
 
 	Highcharts.chart('container', {
 
 		title: {
-			text: 'Graph of Menance wins'
+			text: 'Menace Learning growth based on beads'
 		},
-
+	
 		subtitle: {
-			text: ''
+			text: 'Based on the first matchbox'
 		},
-
+	
 		yAxis: {
 			title: {
-				text: 'Number of Wins'
+				text: 'Number of beads'
 			}
 		},
-
+	
 		xAxis: {
+			title: {
+				text: 'Number of Matches'
+			},
 			accessibility: {
-				rangeDescription: 'Range: 0 to 10'
+				rangeDescription: 'Range: 1 to 10000'
 			}
 		},
-
+	
 		legend: {
 			layout: 'vertical',
 			align: 'right',
 			verticalAlign: 'middle'
 		},
-
+	
 		plotOptions: {
 			series: {
 				label: {
@@ -369,12 +383,13 @@ function publishgraphs(){
 				pointStart: 0
 			}
 		},
-
+	
 		series: [{
-			name: 'Menance',
-			data: [0, 1, 2, 3, 4, 5, 6, 7]
-		}],
-
+			name: 'Number of Beads in Matchbox 1',
+			// data: numberOfBead
+			data: [1,2,3,4,5,6,7,8,9,-1,2,2,3,45,4,3,2,1,5,6,7,8,9,4,5,5,6,-1,1,1,1,4,-5,-7]
+		}, ],
+	
 		responsive: {
 			rules: [{
 				condition: {
@@ -388,9 +403,7 @@ function publishgraphs(){
 					}
 				}
 			}]
-		}
-
-	});
+		}});
 
 	Highcharts.chart('container1', {
 		chart: {
