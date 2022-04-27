@@ -124,8 +124,9 @@ function endGame(draw) {
 
 function updateGameInfo(){
 	gameInfo.endTime = Date.now()
-
+	gameInfo.matchLength = gameInfo.endTime - gameInfo.startTime;
 	stats.gameHistory.push(gameInfo)
+	logGame(stats)
 }
 
 function isDraw() {
