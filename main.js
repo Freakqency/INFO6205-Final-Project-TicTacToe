@@ -40,7 +40,7 @@ gameType = 2;
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
-gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus": "", "numberOfBead":0 }
+gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus": "", "numberOfBead":0, "numberOfPositions":0 }
 
 let circleTurn
 
@@ -125,7 +125,8 @@ function startGame() {
 function playMenace() {
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	var currentBoardState = getBoardState()
-	console
+	gameInfo.numberOfMenaceMoves++
+	gameInfo.numberOfPositions++
 	var currentMove = getBead(currentBoardState)
 	console.log("Menace 1 cuurent ", currentMove)
 
@@ -137,7 +138,7 @@ function playMenace() {
 		setBoardHoverClass()
 	}
 	if(gameType==2 || gameType==3){
-		window.setTimeout(playMenace2, 1000)
+		window.setTimeout(playMenace2, 2500)
 	}
 }
 
@@ -195,8 +196,12 @@ function endGame(draw) {
 	}
 	lockBoard();
 	updateGameInfo();
-	if(gameType==2 || gameType==3)
+	if(gameType==2 || gameType==3){
+		gameNumber = stats.totalMatch + 1
 		restart()
+		// document.getElementById("header").innerHTML = "Match Number "+ gameNumber;
+	}
+		
 }
 
 function updateGameInfo() {
@@ -339,9 +344,13 @@ function publishgraphs(){
 
 	gameNumber = []
 	numberOfBead = []
+	numberOfMoves = []
+	numberOfPositions = []
 	for(let i=0; i<stats.totalMatch; i++){
 		gameNumber.push(i)
 		numberOfBead.push(stats.gameHistory[i].numberOfBead)
+		numberOfMoves.push(stats.gameHistory[i].numberOfMenaceMoves)
+		numberOfPositions.push(stats.gameHistory[i].numberOfPositions)
 	}	
 
 	Highcharts.chart('container', {
@@ -386,8 +395,8 @@ function publishgraphs(){
 	
 		series: [{
 			name: 'Number of Beads in Matchbox 1',
-			// data: numberOfBead
-			data: [1,2,3,4,5,6,7,8,9,-1,2,2,3,45,4,3,2,1,5,6,7,8,9,4,5,5,6,-1,1,1,1,4,-5,-7]
+			data: numberOfBead
+			// data: [1,2,3,4,5,6,7,8,9,-1,2,2,3,45,4,3,2,1,5,6,7,8,9,4,5,5,6,-1,1,1,1,4,-5,-7]
 		}, ],
 	
 		responsive: {
@@ -410,39 +419,29 @@ function publishgraphs(){
 			type: 'column'
 		},
 		title: {
-			text: 'Graph of Human wins'
+			text: 'Moves and Positions per game'
 		},
 		subtitle: {
 			text: ''
 		},
 		xAxis: {
-			categories: [
-				'0',
-				'1',
-				'2',
-				'3',
-				'4',
-				'5',
-				'6',
-				'7',
-				'8',
-				'9',
-				'10',
-				'11'
-			],
+			title: {
+				text: 'Number of Matches'
+			},
+			categories: gameNumber,
 			crosshair: true
 		},
 		yAxis: {
 			min: 0,
 			title: {
-				text: 'Number of Wins'
+				text: 'Number of Moves and Positions'
 			}
 		},
 		tooltip: {
-			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-				'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-			footerFormat: '</table>',
+			// headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			// pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+			// 	'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+			// footerFormat: '</table>',
 			shared: true,
 			useHTML: true
 		},
@@ -453,12 +452,12 @@ function publishgraphs(){
 			}
 		},
 		series: [{
-			name: 'Human',
-			data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+			name: 'Moves',
+			data: numberOfMoves
 
 		}, {
-			name: 'Menance',
-			data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+			name: 'Positions',
+			data: numberOfPositions
 
 		}]
 	});
