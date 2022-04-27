@@ -86,7 +86,7 @@ function startGame() {
 	})
 	setBoardHoverClass
 	logGame("Starting the game !")
-	
+
 	fillMatchBox();
 	playMenace()
 }
@@ -232,7 +232,7 @@ function postmortem() {
 	for (let i = 0; i < mv; i++) matchBoxes[record_pos[i]][record_moves[i]] += adjacements
 }
 
-function publishgraphs(){
+function publishgraphs() {
 	Highcharts.chart('container', {
 
 		title: {
