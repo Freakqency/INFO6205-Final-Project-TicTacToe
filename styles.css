@@ -125,7 +125,7 @@ body {
 }
 .btn-align
 {
-	background-color: green;
+	background-color: #0b410b ;
     border: 5px solid green;
     border-radius: 22px;
     width: 200px;
@@ -219,4 +219,17 @@ highcharts-data-table caption {
 .btn-green
 {
 	background-color: #0b410b !important;
+}
+.logo{
+	--cell-size: 50px;
+}
+.logo::after
+{
+	width: 10px;
+    height: 35px;
+}
+.logo::after,.logo::before
+{
+	width: 10px !important;
+    height: 35px !important;
 }
