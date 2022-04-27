@@ -22,34 +22,45 @@ const WINNING_COMBINATIONS = [
 
 var matchBoxes = [];
 
-let stats = {"menaceWin":0, "menaceDraw":0, "menaceLost":0, "totalMatch":0, "gameHistory":[]}
-gameInfo = {"startTime": Date.UTC}
+let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [] }
+gameInfo = { "startTime": Date.UTC }
 
 let circleTurn
-
 
 let gameCells = 9
 
 let getAllGameStates = gameCells => {
-    let possibleMoves = '012'.split('') // X --> 1, O --> 2, empty position --> 0
-    let lengthen = word => possibleMoves.map(letter => word + letter)
-    let addLetters = words => flatten(words.map(lengthen))
-    let _getAllWords = (letters, words = possibleMoves, current = 1) => {
-        return letters == current ? words : 
-            _getAllWords(letters, addLetters(words), current + 1)
-    }
+	let possibleMoves = '012'.split('') // X --> 1, O --> 2, empty position --> 0
+	let lengthen = word => possibleMoves.map(letter => word + letter)
+	let addLetters = words => flatten(words.map(lengthen))
+	let _getAllWords = (letters, words = possibleMoves, current = 1) => {
+		return letters == current ? words :
+			_getAllWords(letters, addLetters(words), current + 1)
+	}
 
-    return _getAllWords(gameCells)
+	return _getAllWords(gameCells)
 }
 
-function fillMatchBox(){
+function fillMatchBox() {
 	gameStates = getAllGameStates(gameCells)
 	for (const element of gameStates) {
-		move = {element:[1,2,3,4,5,6,7,8,9]}
-		matchBoxes.push(move)
+		var temp = []
+		for (let i = 0; i < element.length; i++) {
+			if (element[i] == '0') temp.push(i)
+		}
+		matchBoxes[element] = temp
 	}
 	console.log("matchboxes ", matchBoxes)
 	logGame("Making the matchboxes and beads ready for you...")
+}
+
+function random_item(items) {
+	return items[Math.floor(Math.random() * items.length)];
+}
+
+function getBead(currentBoardState) {
+	var beads = matchBoxes[currentBoardState]
+	return random_item(beads)
 }
 
 cellElements.forEach(cell => {
@@ -71,6 +82,7 @@ function handleClick(e) {
 	const cell = e.target
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	placeMark(cell, currentClass)
+	var currentBoardState = getBoardState()
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
 	else {
@@ -90,7 +102,7 @@ function endGame(draw) {
 		logGame(`${circleTurn ? "O Win's" : "X wins"}`)
 
 	}
-	
+
 	lockBoard();
 
 }
@@ -109,7 +121,7 @@ function swapTurns() {
 	circleTurn = !circleTurn
 }
 
-function lockBoard(){
+function lockBoard() {
 	cellElements.forEach(cell => {
 		cell.removeEventListener('click', handleClick, { once: false })
 	})
@@ -130,18 +142,24 @@ function checkWin(currentClass) {
 	})
 }
 
-function logGame(message){
-	var 	logElement = document.createElement("div");
+function getBoardState() {
+	var board = Array.from(cellElements);
+	for (let i = 0; i < 9; i++) {
+		if (board[i].className == "cell x") board[i] = 1
+		else if (board[i].className == 'cell circle') board[i] = 2
+		else board[i] = 0
+	}
+	return board.join("")
+}
+function logGame(message) {
+	var logElement = document.createElement("div");
 	logElement.classList.add("col-md-12")
 	document.getElementById('logContainer').insertBefore(logElement, document.getElementById('logContainer').firstChild);
 	logElement.appendChild(document.createTextNode(message));
 
-	// document.getElementById('logContainer').appendChild(logElement);  
+	// document.getElementById('logContainer').appendChild(logElement);
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
 
-
 startGame()
-
-
