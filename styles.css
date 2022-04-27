@@ -301,3 +301,12 @@ highcharts-data-table caption {
     border-radius: 50%;
 	background-color: #be5f14;
 }
+.font-size
+{
+	color: #9a0b0b;
+    font-size: 22px;
+    border-style: solid;
+    border: 5px solid #0b410b;
+    padding: 5px 5px;
+    margin: 5px 5px;
+}
