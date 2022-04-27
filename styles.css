@@ -310,3 +310,12 @@ highcharts-data-table caption {
     padding: 5px 5px;
     margin: 5px 5px;
 }
+.btn-align1
+{
+	background-color: #0b410b;
+    width: 130px;
+    height: 40px;
+    color: white;
+    font-size: 15px;
+	border-radius: 5px;
+}
