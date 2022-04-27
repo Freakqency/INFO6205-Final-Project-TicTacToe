@@ -40,7 +40,7 @@ gameType = 2;
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
-gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus": "" }
+gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus": "", "numberOfBead":0 }
 
 let circleTurn
 
@@ -74,9 +74,9 @@ function fillMatchBox() {
 }
 
 function random_item(items) {
-	console.log("items ",items)
+	// console.log("items ",items)
 	currentMove = items[Math.floor(Math.random() * items.length)];
-	console.log("current move of items ", currentMove)
+	// console.log("current move of items ", currentMove)
 	if (currentMove >=0 || currentMove <=8)
 	return currentMove
 	else
@@ -137,7 +137,7 @@ function playMenace() {
 		setBoardHoverClass()
 	}
 	if(gameType==2 || gameType==3){
-		window.setTimeout(playMenace2, 1000)
+		window.setTimeout(playMenace2, 2000)
 	}
 }
 
@@ -289,12 +289,30 @@ let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
 
 function postmortem() {
 	var adjacements
-	if (winner == "X") adjacements = BETA
-	else if (winner == "O") adjacements = GAMMA
-	else if (winner == "Draw") adjacements = DELTA
-	for (let i = 0; i < mv; i++) 
-	matchBoxes[record_pos[i]].push(record_moves[i])
-	// matchBoxes[record_pos[i]][record_moves[i]] += adjacements
+	if (winner == "X") {
+		for (let i = 0; i < mv; i++) {
+			matchBoxes[record_pos[i]].push(record_moves[i])
+			console.log("Current match"+matchBoxes[record_pos[i]])
+		}
+
+	}
+	else if (winner == "O") {
+		for (let i = 0; i < mv; i++) {
+			var filtered = matchBoxes[record_pos[i]].filter(function(value, index, arr){ 
+				return value == record_pos[i];
+			});
+			matchBoxes[record_pos[i]]=filtered
+			console.log("match remove"+matchBoxes[record_pos[i]])
+
+		}
+
+	}
+	else if (winner == "Draw") {
+		for (let i = 0; i < DELTA; i++) {
+			matchBoxes[record_pos[i]].push(record_moves[i])
+		}	}
+		console.log(matchBoxes[record_pos])
+		// matchBoxes[record_pos[i]][record_moves[i]] += adjacements
 	if(gameType==2){
 		if (winner == "O") adjacements = BETA
 		else if (winner == "X") adjacements = GAMMA
@@ -312,6 +330,7 @@ function publishgraphs(){
 	document.getElementById("total").innerText = stats.totalMatch
 	document.getElementById("win").innerText = stats.menaceWin
 	document.getElementById("lost").innerText = stats.menaceLost
+	document.getElementById("draw").innerText = stats.menaceDraw
 	
 
 	Highcharts.chart('container', {
