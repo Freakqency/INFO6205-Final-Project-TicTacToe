@@ -66,7 +66,7 @@ function fillMatchBox() {
 			if (element[i] == '0') temp.push(i)
 		}
 		matchBoxes[element] = temp
-		if(gameType=2){
+		if (gameType = 2) {
 			matchBoxesMenace2[element] = temp
 		}
 	}
@@ -271,13 +271,13 @@ function postmortem() {
 	else if (winner == "O") adjacements = GAMMA
 	else if (winner == "Draw") adjacements = DELTA
 	for (let i = 0; i < mv; i++) matchBoxes[record_pos[i]][record_moves[i]] += adjacements
-	if(gameType==2){
+	if (gameType == 2) {
 		if (winner == "O") adjacements = BETA
 		else if (winner == "X") adjacements = GAMMA
 		else if (winner == "Draw") adjacements = DELTA
 		for (let j = 0; j < mvM2; j++) matchBoxesMenace2[record_posM2[i]][record_movesM2[i]] += adjacements
 	}
-	
+
 }
 
 function publishgraphs() {
