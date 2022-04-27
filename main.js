@@ -28,6 +28,9 @@ var record_pos = new Array()
 var mv
 
 var matchBoxes = [];
+var matchBoxesMenace2 = [];
+// 1 = menace vs human, 2 = menace Vs menace, 3 = menace vs perfect 
+gameType = 1;
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
