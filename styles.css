@@ -260,3 +260,42 @@ highcharts-data-table caption {
     height: var(--mark-size);
 	background-color: #800f0f;
 }
+.logo1{
+	--cell-size: 50px;
+	border: 1px solid #0b410b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 5px;
+    width: 50px;
+    height: 50px;
+}
+.logo1::after
+{
+	width: 10px;
+    height: 35px;
+}
+.logo1::after
+{
+	width: 18px !important;
+    height: 20px !important;
+	width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: white;
+	content: '';
+    position: absolute;
+    border-radius: 50%;
+	box-sizing: border-box;
+}
+.logo1::before
+{
+	width: 35px !important;
+    height: 36px !important;
+	content: '';
+    position: absolute;
+    border-radius: 50%;
+	background-color: #be5f14;
+}
