@@ -72,40 +72,36 @@ function startGame() {
 		cell.addEventListener('click', handleClick, { once: true })
 	})
 	setBoardHoverClass
-	fillMatchBox();
 	logGame("Starting the game !")
-}
-
-function initGame(e) {
-	const cell = e.target
-	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-	placeMark(cell, currentClass)
-	var currentBoardState = getBoardState()
-	for (let i = 0; i < 9; i++) {
-		if (i % 2 == 0) playMenace()
-		else if (i % 2 != 0) playHuman()
-	}
+	fillMatchBox();
+	playMenace()
 }
 
 function playMenace() {
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-	placeMark(cell, currentClass)
 	var currentBoardState = getBoardState()
 	var currentMove = getBead(currentBoardState)
-	placeMark(, currentClass)
-}
-
-function handleClick(e) {
-	const cell = e.target
-	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-	placeMark(cell, currentClass)
-	var currentBoardState = getBoardState()
-	console.log(getBead(currentBoardState))
+	console.log(currentMove)
+	placeMarkMenace(currentMove, currentClass)
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
 	else {
 		swapTurns()
 		setBoardHoverClass()
+	}
+}
+
+function handleClick(e) {
+	const cell = e.target
+	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
+	placeMarkHuman(cell, currentClass)
+	var currentBoardState = getBoardState()
+	if (checkWin(currentClass)) endGame(false);
+	else if (isDraw()) endGame(true)
+	else {
+		swapTurns()
+		setBoardHoverClass()
+		playMenace()
 	}
 }
 
@@ -133,6 +129,10 @@ function isDraw() {
 
 function placeMarkHuman(cell, currentClass) {
 	cell.classList.add(currentClass)
+}
+
+function placeMarkMenace(idx, currentClass) {
+	document.getElementById("pos" + idx).classList.add(currentClass)
 }
 
 
