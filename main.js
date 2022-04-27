@@ -19,6 +19,13 @@ const WINNING_COMBINATIONS = [
 	[0, 4, 8],
 	[2, 4, 6],
 ]
+var winner
+const BETA = 3
+const GAMMA = -1
+const DELTA = 1
+var record_moves = new Array()
+var record_pos = new Array()
+var mv
 
 var matchBoxes = [];
 
@@ -59,7 +66,11 @@ function random_item(items) {
 
 function getBead(currentBoardState) {
 	var beads = matchBoxes[currentBoardState]
-	return random_item(beads)
+	var currentMove = random_item(beads)
+	record_pos[mv] = currentBoardState
+	record_moves[mv] = currentMove
+	mv++
+	return currentMove
 }
 
 cellElements.forEach(cell => {
@@ -67,6 +78,7 @@ cellElements.forEach(cell => {
 })
 
 function startGame() {
+	mv = 0
 	circleTurn = false
 	cellElements.forEach(cell => {
 		cell.addEventListener('click', handleClick, { once: true })
@@ -107,14 +119,16 @@ function handleClick(e) {
 
 function endGame(draw) {
 	if (draw) {
-		console.log("Draw")
-		logGame("Its a draw. Well tried!")
 		document.getElementById("header").innerHTML = `Match Draw`;
+		winner = "Draw"
+		console.log(winner)
+		logGame(winner)
 	} else {
 		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
-		console.log(`${circleTurn ? "O Win's" : "X wins"}`);
-		logGame(`${circleTurn ? "O Win's" : "X wins"}`)
-
+		winner = circleTurn ? "O" : "X"
+		console.log(`${winner} Win's`);
+		logGame(`${winner} Win's`)
+		postmortem()
 	}
 
 	lockBoard();
@@ -178,5 +192,12 @@ function logGame(message) {
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
+
+function postmortem() {
+	if (winner == "X") var adjacements = BETA
+	else if (winner == "O") var adjacements = GAMMA
+	else if (winner == "Draw") var adjacements = DELTA
+	for (let i = 0; i < mv; i++) matchBoxes[record_pos[i]][record_moves[i]] += adjacements
+}
 
 startGame()
