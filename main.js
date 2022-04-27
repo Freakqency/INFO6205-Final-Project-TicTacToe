@@ -126,7 +126,22 @@ function updateGameInfo(){
 	gameInfo.endTime = Date.now()
 	gameInfo.matchLength = gameInfo.endTime - gameInfo.startTime;
 	stats.gameHistory.push(gameInfo)
-	logGame(stats)
+	logGame(JSON.stringify(stats))
+}
+
+function restart(){
+	clearBoard();
+	startGame();
+}
+
+function clearBoard(){
+	cellElements.forEach(cell => {
+		cell.classList.remove(X_CLASS)
+		cell.classList.remove(CIRCLE_CLASS)
+	})
+	cellElements.forEach(cell => {
+		cell.addEventListener('click', handleClick, { once: true })
+	})
 }
 
 function isDraw() {
