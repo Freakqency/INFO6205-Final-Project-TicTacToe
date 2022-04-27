@@ -40,13 +40,13 @@ gameType = 1;
 
 const select = document.getElementById('select');
 select.addEventListener('change', function handleChange(event) {
+	
 	console.log(event.target.value); // get selected VALUE
 	//get selected VALUE even outside event handler
 	gameType=select.options[select.selectedIndex].value;
-	startGame()
-	});
-console.log(gameType,"gameType 1111");
-
+	startGame();
+	
+});
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
