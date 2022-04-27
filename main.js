@@ -19,12 +19,19 @@ const WINNING_COMBINATIONS = [
 	[0, 4, 8],
 	[2, 4, 6],
 ]
+var winner
+const BETA = 3
+const GAMMA = -1
+const DELTA = 1
+var record_moves = new Array()
+var record_pos = new Array()
+var mv
 
 var matchBoxes = [];
 
-let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength":0 }
+let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
-gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus":""}
+gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus": "" }
 
 let circleTurn
 
@@ -60,7 +67,11 @@ function random_item(items) {
 
 function getBead(currentBoardState) {
 	var beads = matchBoxes[currentBoardState]
-	return random_item(beads)
+	var currentMove = random_item(beads)
+	record_pos[mv] = currentBoardState
+	record_moves[mv] = currentMove
+	mv++
+	return currentMove
 }
 
 cellElements.forEach(cell => {
@@ -68,6 +79,7 @@ cellElements.forEach(cell => {
 })
 
 function startGame() {
+	mv = 0
 	circleTurn = false
 	cellElements.forEach(cell => {
 		cell.addEventListener('click', handleClick, { once: true })
@@ -108,33 +120,36 @@ function handleClick(e) {
 
 function endGame(draw) {
 	if (draw) {
-		console.log("Draw")
-		logGame("Its a draw. Well tried!")
 		document.getElementById("header").innerHTML = `Match Draw`;
+		winner = "Draw"
+		console.log(winner)
+		logGame(winner)
 		gameInfo.gameStatus = "D"
 	} else {
 		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
-		console.log(`${circleTurn ? "O Win's" : "X wins"}`);
-		logGame(`${circleTurn ? "O Win's" : "X wins"}`)
+		winner = circleTurn ? "O" : "X"
+		console.log(`${winner} Win's`);
+		logGame(`${winner} Win's`)
+		postmortem()
 		gameInfo.gameStatus = `${circleTurn ? "L" : "W"}`
 	}
 	lockBoard();
 	updateGameInfo();
 }
 
-function updateGameInfo(){
+function updateGameInfo() {
 	gameInfo.endTime = Date.now()
 	gameInfo.matchLength = gameInfo.endTime - gameInfo.startTime;
 	stats.gameHistory.push(gameInfo)
 	logGame(JSON.stringify(stats))
 }
 
-function restart(){
+function restart() {
 	clearBoard();
 	startGame();
 }
 
-function clearBoard(){
+function clearBoard() {
 	cellElements.forEach(cell => {
 		cell.classList.remove(X_CLASS)
 		cell.classList.remove(CIRCLE_CLASS)
@@ -201,5 +216,12 @@ function logGame(message) {
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
+
+function postmortem() {
+	if (winner == "X") var adjacements = BETA
+	else if (winner == "O") var adjacements = GAMMA
+	else if (winner == "Draw") var adjacements = DELTA
+	for (let i = 0; i < mv; i++) matchBoxes[record_pos[i]][record_moves[i]] += adjacements
+}
 
 startGame()
