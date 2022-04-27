@@ -168,8 +168,9 @@ highcharts-data-table caption {
 .hgt-overflow{
 	background-color: #fff;
     height: 400px;
-    overflow-y: scroll;
+    overflow: scroll;
 	margin-top: 14px;
+	width:450px;
 }
 .highcharts-figure,
 .highcharts-data-table table {
@@ -309,4 +310,15 @@ highcharts-data-table caption {
     border: 5px solid #0b410b;
     padding: 5px 5px;
     margin: 5px 5px;
+}
+.btn-align1
+{
+	background-color: #0b410b;
+    width: 190px;
+    height: 40px;
+    color: white;
+    font-size: 15px;
+	border-radius: 5px;
+	text-align: center;
+	border: 5px solid green;
 }
