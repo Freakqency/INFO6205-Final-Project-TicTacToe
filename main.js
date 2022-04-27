@@ -74,6 +74,7 @@ function startGame() {
 	})
 	setBoardHoverClass
 	logGame("Starting the game !")
+	
 	fillMatchBox();
 	playMenace()
 }
@@ -131,7 +132,14 @@ function updateGameInfo(){
 
 function restart(){
 	clearBoard();
-	startGame();
+	publishgraphs();
+	circleTurn = false
+	cellElements.forEach(cell => {
+		cell.addEventListener('click', handleClick, { once: true })
+	})
+	setBoardHoverClass
+	logGame("Starting the new game !")
+	playMenace()
 }
 
 function clearBoard(){
@@ -202,4 +210,124 @@ function logGame(message) {
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
 
+function publishgraphs(){
+	Highcharts.chart('container', {
+
+		title: {
+			text: 'Graph of Menance wins'
+		},
+
+		subtitle: {
+			text: ''
+		},
+
+		yAxis: {
+			title: {
+				text: 'Number of Wins'
+			}
+		},
+
+		xAxis: {
+			accessibility: {
+				rangeDescription: 'Range: 0 to 10'
+			}
+		},
+
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'middle'
+		},
+
+		plotOptions: {
+			series: {
+				label: {
+					connectorAllowed: false
+				},
+				pointStart: 0
+			}
+		},
+
+		series: [{
+			name: 'Menance',
+			data: [0, 1, 2, 3, 4, 5, 6, 7]
+		}],
+
+		responsive: {
+			rules: [{
+				condition: {
+					maxWidth: 500
+				},
+				chartOptions: {
+					legend: {
+						layout: 'horizontal',
+						align: 'center',
+						verticalAlign: 'bottom'
+					}
+				}
+			}]
+		}
+
+	});
+
+	Highcharts.chart('container1', {
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Graph of Human wins'
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+			categories: [
+				'0',
+				'1',
+				'2',
+				'3',
+				'4',
+				'5',
+				'6',
+				'7',
+				'8',
+				'9',
+				'10',
+				'11'
+			],
+			crosshair: true
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Number of Wins'
+			}
+		},
+		tooltip: {
+			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+			footerFormat: '</table>',
+			shared: true,
+			useHTML: true
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
+			}
+		},
+		series: [{
+			name: 'Human',
+			data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+		}, {
+			name: 'Menance',
+			data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+		}]
+	});
+}
+
+publishgraphs()
 startGame()
