@@ -27,9 +27,9 @@ gameInfo = { "startTime": Date.UTC }
 
 let circleTurn
 
-let gameCells = 9
+const GAME_CELLS = 9
 
-let getAllGameStates = gameCells => {
+let getAllGameStates = GAME_CELLS => {
 	let possibleMoves = '012'.split('') // X --> 1, O --> 2, empty position --> 0
 	let lengthen = word => possibleMoves.map(letter => word + letter)
 	let addLetters = words => flatten(words.map(lengthen))
@@ -38,11 +38,11 @@ let getAllGameStates = gameCells => {
 			_getAllWords(letters, addLetters(words), current + 1)
 	}
 
-	return _getAllWords(gameCells)
+	return _getAllWords(GAME_CELLS)
 }
 
 function fillMatchBox() {
-	gameStates = getAllGameStates(gameCells)
+	gameStates = getAllGameStates(GAME_CELLS)
 	for (const element of gameStates) {
 		var temp = []
 		for (let i = 0; i < element.length; i++) {
@@ -50,7 +50,6 @@ function fillMatchBox() {
 		}
 		matchBoxes[element] = temp
 	}
-	console.log("matchboxes ", matchBoxes)
 	logGame("Making the matchboxes and beads ready for you...")
 }
 
@@ -73,21 +72,36 @@ function startGame() {
 		cell.addEventListener('click', handleClick, { once: true })
 	})
 	setBoardHoverClass
-	fillMatchBox();
 	logGame("Starting the game !")
-	console.log("matchbox  ", matchBoxes);
+	fillMatchBox();
+	playMenace()
+}
+
+function playMenace() {
+	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
+	var currentBoardState = getBoardState()
+	var currentMove = getBead(currentBoardState)
+	console.log(currentMove)
+	placeMarkMenace(currentMove, currentClass)
+	if (checkWin(currentClass)) endGame(false);
+	else if (isDraw()) endGame(true)
+	else {
+		swapTurns()
+		setBoardHoverClass()
+	}
 }
 
 function handleClick(e) {
 	const cell = e.target
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-	placeMark(cell, currentClass)
+	placeMarkHuman(cell, currentClass)
 	var currentBoardState = getBoardState()
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
 	else {
 		swapTurns()
 		setBoardHoverClass()
+		playMenace()
 	}
 }
 
@@ -113,9 +127,14 @@ function isDraw() {
 	})
 }
 
-function placeMark(cell, currentClass) {
+function placeMarkHuman(cell, currentClass) {
 	cell.classList.add(currentClass)
 }
+
+function placeMarkMenace(idx, currentClass) {
+	document.getElementById("pos" + idx).classList.add(currentClass)
+}
+
 
 function swapTurns() {
 	circleTurn = !circleTurn
@@ -156,8 +175,6 @@ function logGame(message) {
 	logElement.classList.add("col-md-12")
 	document.getElementById('logContainer').insertBefore(logElement, document.getElementById('logContainer').firstChild);
 	logElement.appendChild(document.createTextNode(message));
-
-	// document.getElementById('logContainer').appendChild(logElement);
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
