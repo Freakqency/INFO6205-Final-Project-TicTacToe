@@ -36,7 +36,7 @@ var mvM2
 var matchBoxes = [];
 var matchBoxesMenace2 = [];
 // 1 = menace vs human, 2 = menace Vs menace, 3 = menace vs perfect 
-gameType = 1;
+gameType = 2;
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
@@ -74,11 +74,18 @@ function fillMatchBox() {
 }
 
 function random_item(items) {
-	return items[Math.floor(Math.random() * items.length)];
+	console.log("items ",items)
+	currentMove = items[Math.floor(Math.random() * items.length)];
+	console.log("current move of items ", currentMove)
+	if (currentMove >=0 || currentMove <=8)
+	return currentMove
+	else
+	return 0
 }
 
 function getBead(currentBoardState) {
 	var beads = matchBoxes[currentBoardState]
+	console.log("beads", beads)
 	var currentMove = random_item(beads)
 	record_pos[mv] = currentBoardState
 	record_moves[mv] = currentMove
@@ -118,14 +125,19 @@ function startGame() {
 function playMenace() {
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	var currentBoardState = getBoardState()
+	console
 	var currentMove = getBead(currentBoardState)
-	console.log(currentMove)
+	console.log("Menace 1 cuurent ", currentMove)
+
 	placeMarkMenace(currentMove, currentClass)
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
 	else {
 		swapTurns()
 		setBoardHoverClass()
+	}
+	if(gameType==2 || gameType==3){
+		window.setTimeout(playMenace2, 1000)
 	}
 }
 
@@ -133,7 +145,7 @@ function playMenace2() {
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	var currentBoardState = getBoardState()
 	var currentMove = getBeadMenace2(currentBoardState)
-	console.log(currentMove)
+	console.log("Menace 2 cuurent ", currentMove)
 	placeMarkMenace(currentMove, currentClass)
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
@@ -141,6 +153,7 @@ function playMenace2() {
 		swapTurns()
 		setBoardHoverClass()
 	}
+	playMenace()
 }
 
 
@@ -160,12 +173,14 @@ function handleClick(e) {
 }
 
 function endGame(draw) {
+	stats.totalMatch++
 	if (draw) {
 		document.getElementById("header").innerHTML = `Match Draw`;
 		winner = "Draw"
 		console.log(winner)
 		logGame(winner)
 		gameInfo.gameStatus = "D"
+		stats.menaceDraw++
 	} else {
 		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
 		winner = circleTurn ? "O" : "X"
@@ -173,9 +188,15 @@ function endGame(draw) {
 		logGame(`${winner} Win's`)
 		postmortem()
 		gameInfo.gameStatus = `${circleTurn ? "L" : "W"}`
+		if(winner=="X")
+		stats.menaceWin++
+		else if(winner=="O")
+		stats.menaceLost++
 	}
 	lockBoard();
 	updateGameInfo();
+	if(gameType==2 || gameType==3)
+		restart()
 }
 
 function updateGameInfo() {
@@ -218,6 +239,7 @@ function placeMarkHuman(cell, currentClass) {
 }
 
 function placeMarkMenace(idx, currentClass) {
+	console.log("index ", idx)
 	document.getElementById("pos" + idx).classList.add(currentClass)
 }
 
@@ -270,17 +292,28 @@ function postmortem() {
 	if (winner == "X") adjacements = BETA
 	else if (winner == "O") adjacements = GAMMA
 	else if (winner == "Draw") adjacements = DELTA
-	for (let i = 0; i < mv; i++) matchBoxes[record_pos[i]][record_moves[i]] += adjacements
+	for (let i = 0; i < mv; i++) 
+	matchBoxes[record_pos[i]].push(record_moves[i])
+	// matchBoxes[record_pos[i]][record_moves[i]] += adjacements
 	if(gameType==2){
 		if (winner == "O") adjacements = BETA
 		else if (winner == "X") adjacements = GAMMA
 		else if (winner == "Draw") adjacements = DELTA
-		for (let j = 0; j < mvM2; j++) matchBoxesMenace2[record_posM2[i]][record_movesM2[i]] += adjacements
+		for (let i = 0; i < mvM2; i++) 
+		matchBoxes[record_posM2[i]].push(record_movesM2[i])
+		// for (let j = 0; j < mvM2; j++) matchBoxesMenace2[record_posM2[i]][record_movesM2[i]] += adjacements
 	}
+	
 	
 }
 
 function publishgraphs(){
+
+	document.getElementById("total").innerText = stats.totalMatch
+	document.getElementById("win").innerText = stats.menaceWin
+	document.getElementById("lost").innerText = stats.menaceLost
+	
+
 	Highcharts.chart('container', {
 
 		title: {
