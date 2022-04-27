@@ -22,7 +22,7 @@ const WINNING_COMBINATIONS = [
 
 var matchBoxes = [];
 
-let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [] }
+let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength":0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
 gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus":""}
 
@@ -111,15 +111,21 @@ function endGame(draw) {
 		console.log("Draw")
 		logGame("Its a draw. Well tried!")
 		document.getElementById("header").innerHTML = `Match Draw`;
+		gameInfo.gameStatus = "D"
 	} else {
 		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
 		console.log(`${circleTurn ? "O Win's" : "X wins"}`);
 		logGame(`${circleTurn ? "O Win's" : "X wins"}`)
-
+		gameInfo.gameStatus = `${circleTurn ? "L" : "W"}`
 	}
-
 	lockBoard();
+	updateGameInfo();
+}
 
+function updateGameInfo(){
+	gameInfo.endTime = Date.now()
+
+	stats.gameHistory.push(gameInfo)
 }
 
 function isDraw() {
