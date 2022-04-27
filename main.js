@@ -23,7 +23,8 @@ const WINNING_COMBINATIONS = [
 var matchBoxes = [];
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [] }
-gameInfo = { "startTime": Date.UTC }
+// D - Draw, W - Menace Win, L - Menace Lost  
+gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus":""}
 
 let circleTurn
 
