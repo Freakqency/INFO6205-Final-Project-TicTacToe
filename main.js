@@ -50,6 +50,8 @@ function fillMatchBox() {
 		}
 		matchBoxes[element] = temp
 	}
+	console.log("matchboxes ", matchBoxes)
+	logGame("Making the matchboxes and beads ready for you...")
 }
 
 function random_item(items) {
@@ -72,6 +74,8 @@ function startGame() {
 	})
 	setBoardHoverClass
 	fillMatchBox();
+	logGame("Starting the game !")
+	console.log("matchbox  ", matchBoxes);
 }
 
 function handleClick(e) {
@@ -90,8 +94,15 @@ function handleClick(e) {
 function endGame(draw) {
 	if (draw) {
 		console.log("Draw")
-	} else console.log(`${circleTurn ? "O Win's" : "X wins"}`)
-	document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
+		logGame("Its a draw. Well tried!")
+		document.getElementById("header").innerHTML = `Match Draw`;
+	} else {
+		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
+		console.log(`${circleTurn ? "O Win's" : "X wins"}`);
+		logGame(`${circleTurn ? "O Win's" : "X wins"}`)
+
+	}
+
 	lockBoard();
 
 }
@@ -139,6 +150,14 @@ function getBoardState() {
 		else board[i] = 0
 	}
 	return board.join("")
+}
+function logGame(message) {
+	var logElement = document.createElement("div");
+	logElement.classList.add("col-md-12")
+	document.getElementById('logContainer').insertBefore(logElement, document.getElementById('logContainer').firstChild);
+	logElement.appendChild(document.createTextNode(message));
+
+	// document.getElementById('logContainer').appendChild(logElement);
 }
 
 let flatten = arr => arr.reduce((carry, item) => carry.concat(item), [])
