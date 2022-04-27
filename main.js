@@ -29,8 +29,9 @@ var mv
 
 var matchBoxes = [];
 
-let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [] }
-gameInfo = { "startTime": Date.UTC }
+let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
+// D - Draw, W - Menace Win, L - Menace Lost  
+gameInfo = { "startTime": Date.now(), "endTime": Date.now(), "numberOfMenaceMoves": 0, "gameStatus": "" }
 
 let circleTurn
 
@@ -123,16 +124,39 @@ function endGame(draw) {
 		winner = "Draw"
 		console.log(winner)
 		logGame(winner)
+		gameInfo.gameStatus = "D"
 	} else {
 		document.getElementById("header").innerHTML = `${circleTurn ? "O Win's" : "X wins"}`;
 		winner = circleTurn ? "O" : "X"
 		console.log(`${winner} Win's`);
 		logGame(`${winner} Win's`)
 		postmortem()
+		gameInfo.gameStatus = `${circleTurn ? "L" : "W"}`
 	}
-
 	lockBoard();
+	updateGameInfo();
+}
 
+function updateGameInfo() {
+	gameInfo.endTime = Date.now()
+	gameInfo.matchLength = gameInfo.endTime - gameInfo.startTime;
+	stats.gameHistory.push(gameInfo)
+	logGame(JSON.stringify(stats))
+}
+
+function restart() {
+	clearBoard();
+	startGame();
+}
+
+function clearBoard() {
+	cellElements.forEach(cell => {
+		cell.classList.remove(X_CLASS)
+		cell.classList.remove(CIRCLE_CLASS)
+	})
+	cellElements.forEach(cell => {
+		cell.addEventListener('click', handleClick, { once: true })
+	})
 }
 
 function isDraw() {
