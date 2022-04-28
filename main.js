@@ -36,7 +36,7 @@ var mvM2
 var matchBoxes = [];
 var matchBoxesMenace2 = [];
 // 1 = menace vs human, 2 = menace Vs menace, 3 = menace vs perfect 
-gameType = 2;
+gameType = 3;
 
 let stats = { "menaceWin": 0, "menaceDraw": 0, "menaceLost": 0, "totalMatch": 0, "gameHistory": [], "matchLength": 0 }
 // D - Draw, W - Menace Win, L - Menace Lost  
@@ -118,14 +118,12 @@ function startGame() {
 	setBoardHoverClass
 	logGame("Starting the game !")
 
-	fillMatchBox();
-	playMenace()
+	// fillMatchBox();
 }
 
 function playMenace() {
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	var currentBoardState = getBoardState()
-	console
 	var currentMove = getBead(currentBoardState)
 	console.log("Menace 1 cuurent ", currentMove)
 
@@ -136,9 +134,8 @@ function playMenace() {
 		swapTurns()
 		setBoardHoverClass()
 	}
-	if (gameType == 2 || gameType == 3) {
-		window.setTimeout(playMenace2, 1000)
-	}
+	if (gameType == 2) window.setTimeout(playMenace2, 1000)
+	else if (gameType = 3) window.setTimeout(playPerfect, 1000)
 }
 
 function playMenace2() {
@@ -162,13 +159,12 @@ function handleClick(e) {
 	const cell = e.target
 	const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
 	placeMarkHuman(cell, currentClass)
-	var currentBoardState = getBoardState()
 	if (checkWin(currentClass)) endGame(false);
 	else if (isDraw()) endGame(true)
 	else {
 		swapTurns()
 		setBoardHoverClass()
-		playMenace()
+		playPerfect()
 	}
 }
 
@@ -215,7 +211,6 @@ function restart() {
 	})
 	setBoardHoverClass
 	logGame("Starting the new game !")
-	playMenace()
 }
 
 function clearBoard() {
@@ -465,8 +460,85 @@ function publishgraphs() {
 		}]
 	});
 }
+const aiPlayer = CIRCLE_CLASS
+const huPlayer = X_CLASS
+
+function playPerfect() {
+	var currentBoardState = getBoardState()
+	var currentMove = bestSpot(currentBoardState, aiPlayer)
+	console.log(currentMove)
+	if (checkWin(aiPlayer)) endGame(false);
+	else if (isDraw()) endGame(true)
+	else {
+		swapTurns()
+		setBoardHoverClass()
+	}
+}
 
 
+function emptySquares() {
+	var res = []
+	var board = getBoardState()
+	for (let i = 0; i < board.length; i++) {
+		if (board[i] == '0') res.push(i);
+	}
+	return res;
+}
+
+function bestSpot(currentBoard, currentPlayer) {
+	return minimax(currentBoard, currentPlayer).index
+}
+
+
+function minimax(newBoard, player) {
+	var availSpots = emptySquares();
+	if (checkWin(player) == true && player == huPlayer) {
+		return { score: -10 };
+	} else if (checkWin(player) == true && player == aiPlayer) {
+		return { score: 10 };
+	} else if (availSpots.length === 0) {
+		return { score: 0 };
+	}
+	var moves = [];
+	for (var i = 0; i < availSpots.length; i++) {
+		var move = {};
+		move.index = newBoard[availSpots[i]];
+		newBoard[availSpots[i]] = player;
+
+		if (player == aiPlayer) {
+			var result = minimax(newBoard, huPlayer);
+			move.score = result.score;
+		} else {
+			var result = minimax(newBoard, aiPlayer);
+			move.score = result.score;
+		}
+
+		newBoard[availSpots[i]] = move.index;
+
+		moves.push(move);
+	}
+
+	var bestMove;
+	if (player === aiPlayer) {
+		var bestScore = -10000;
+		for (var i = 0; i < moves.length; i++) {
+			if (moves[i].score > bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	} else {
+		var bestScore = 10000;
+		for (var i = 0; i < moves.length; i++) {
+			if (moves[i].score < bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	}
+
+	return moves[bestMove];
+}
 
 publishgraphs()
 startGame()
