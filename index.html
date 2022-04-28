@@ -16,6 +16,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+				<br>
 				<h1 class="header-align" id="header">Tic Tac Toe </h1>
 			</div>
 		</div>
@@ -24,10 +25,10 @@
 				<div class="row">
 					<div class="col-md-12 font-size">
 						<div class="row">
-							<div class="col-md-5">
+							<div class="col-md-6">
 								Total Match :
 							</div>
-							<div class="col-md-7" id="total">
+							<div class="col-md-6" id="total">
 								56
 							</div>
 						</div>
@@ -91,17 +92,7 @@
 						<div class="logo"></div>
 					</div>
 					<div class="col-md-10 pt-2">
-						<div class="dropdown show">
-							<a class="btn btn-secondary dropdown-toggle btn-green" href="#" role="button" id="dropdownMenuLink"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Play Against
-							</a>
-
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item" href="#">Human</a>
-								<a class="dropdown-item" href="#">Menance</a>
-							</div>
-						</div>
+						<button class="btn-align1" id="">Menance</button>
 					</div>
 				</div>
 				<div class="row pt-2">
@@ -109,7 +100,26 @@
 						<div class="logo1"></div>
 					</div>
 					<div class="col-md-10 pt-2">
-						
+						<div class="dropdown show">
+							<!-- <a class="btn btn-secondary dropdown-toggle btn-green" href="#" role="button" id="dropdownMenuLink"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Play Against
+							</a> -->
+
+							<!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="#">Human</a>
+								<a class="dropdown-item" href="#">Menance</a>
+								<a class="dropdown-item" href="#">Perfect</a>
+							</div> -->
+
+							<select id="select" class="btn-align1">
+								<option value="">Choose an option</option>
+								<option value="1">Human</option>
+								<option value="2">Menance</option>
+								<option value="3">Perfect</option>
+							</select>
+
+						</div>
 					</div>
 				</div>
 			</div>
