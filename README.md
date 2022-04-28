@@ -1,3 +1,4 @@
+### Menace Tic-Tac-Toe
 A web application developed with JavaScript, which supports 3 modes of playing: 
 
 Human VS Menace 
