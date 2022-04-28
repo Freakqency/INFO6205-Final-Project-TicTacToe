@@ -103,6 +103,7 @@ function getBead(currentBoardState) {
 	return currentMove
 }
 
+
 function getBeadMenace2(currentBoardState) {
 	var beads = matchBoxesMenace2[currentBoardState]
 	var currentMove = random_item(beads)
@@ -475,3 +476,14 @@ function publishgraphs(){
 
 publishgraphs()
 startGame()
+
+function exceuteUnitTest(){
+	console.log("Testing getbeads function for position 102102102")
+	beads = getBead("102102102")
+	if (beads==[1,4,7])
+		console.log("getbeads tests passed")
+	else
+		console.log("getbeads tests failed")
+
+	
+}
