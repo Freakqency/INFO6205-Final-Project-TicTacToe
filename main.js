@@ -485,5 +485,24 @@ function exceuteUnitTest(){
 	else
 		console.log("getbeads tests failed")
 
-	
+	console.log("Testing Menace2 getbeads function for position 102102102")
+	beads = getBeadMenace2("102102102")
+	if (beads==[1,4,7])
+		console.log("getbeads for menace 2  tests passed")
+	else
+		console.log("getbeads for menace 2 tests failed")
+
+	console.log("Testing matchbox generator")
+	fillMatchBox()
+	console.log(matchBoxes.length)
+	if(matchBoxes.length==matchBoxes.length==19382)
+		console.log("Match box generator passed for menace 1 and menace 2")
+	else
+		console.log("Failed Match box generator for menace 1 and menace 2")
+
+	if(document.getElementById("board").length > 0)
+		console.log("Game board population passed")
+	else
+		console.log("Game board population failed")
+		
 }
